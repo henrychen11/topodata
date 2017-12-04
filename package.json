@@ -1,8 +1,8 @@
 {
-  "name": "dashboard",
+  "name": "cryptovault",
   "version": "1.0.0",
   "description": "",
-  "main": "webpack.config.js",
+  "main": "./main/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,17 +10,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "d3": "^4.12.0"
+    "d3": "^4.12.0",
+    "webpack": "^3.6.0"
   },
   "repository": {
   "type": "git",
-  "url": "git+https://github.com/henrychen11/cryptovalut.git"
+  "url": "git+https://github.com/henrychen11/cryptovault.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/henrychen11/cryptovalut/issues"
+    "url": "https://github.com/henrychen11/cryptovault/issues"
   },
-  "homepage": "https://github.com/henrychen11/cryptovalut#readme"
+  "homepage": "https://github.com/henrychen11/cryptovault#readme"
 }
