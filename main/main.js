@@ -1,18 +1,21 @@
 import * as d3 from 'd3';
 import * as topojson from 'topojson';
 
-var w = 1000;
-var h = 800;
-var margin = {	top: 20,	bottom: 20,	left: 20,	right: 20 };
+const w = 1000;
+const h = 800;
+const margin = {	top: 20,	bottom: 20,	left: 20,	right: 20 };
 
-var width = w - margin.left - margin.right;
-var height = h - margin.top - margin.bottom;
+const width = w - margin.left - margin.right;
+const height = h - margin.top - margin.bottom;
 
-var svg = d3.select("body").append("svg")
+const svg = d3.select("display").append("svg")
 						.attr("width", w)
 						.attr("height", h);
 
-var path = d3.geoPath();
+const path = d3.geoPath();
+
+d3.queue()
+	.defer(d3.json, '../data/state.wage_data');
 
 
 // Template from https://bl.ocks.org/mbostock/4090848

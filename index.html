@@ -2,11 +2,10 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Dashboard</title>
+    <title>TopoData</title>
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
     <link href="css/reset.css" rel="stylesheet" />
     <link href="css/main.css" rel="stylesheet" />
-
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-110588323-1"></script>
     <script>
@@ -16,12 +15,24 @@
       gtag('config', 'UA-110588323-1');
     </script>
 
+    <!-- Font Awesome CDN -->
+    <script src="https://use.fontawesome.com/aef07d5ff1.js"></script>
+
+    <!-- USA Map from D3 -->
     <script src="https://d3js.org/topojson.v2.min.js"></script>
   </head>
   <body>
-  
-  <h1>Average Salary by State</h1>
+    <div class="display">
+    <h1 class="page-header">Average Salary by State</h1>
+    </br>
+      <nav class="navbar">
+        <div>Select year: </div>
+        <div>Select Industry: </div>
+        <button>Run Stats</button>
+      </nav>
 
-  <script type="application/javascript" src="lib/bundle.js"></script>
+        <script type="application/javascript" src="lib/bundle.js"></script>
+
+  </div>
   </body>
 </html>
