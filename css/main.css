@@ -1,4 +1,4 @@
-.container {
+/*.container {
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -19,7 +19,7 @@
 
 .tooltip {
   opacity: 0;
-}
+}*/
 
 
 .states :hover {
