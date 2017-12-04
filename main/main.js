@@ -24,10 +24,42 @@ const svg = d3.select("map")
 	.attr("height", h);
 
 //This is the tooltip element
-
 const div = d3.select("map")
 								.append("div")
 								.classed("tooltip", true);
+
+//Reading CSV file::
+// d3.csv("./data/state_wage_data.csv", function(data){
+// 	let averageSalarybyState = {};
+// 	let temp1 = {};
+// 	let temp2 = {};
+// 	data.forEach( function(d){
+// 			averageSalarybyState[d.STATE] = Number(d.TOT_EMP);
+// 			averageSalarybyState[d.STATE] = Number(d.A_MEDIAN);
+// 	});
+// 	console.log(data[0]);
+// 	console.log(averageSalarybyState);
+// 	console.log(temp1);
+// });
+
+d3.csv("./data/state_wage_data2.csv", function(data){
+	let averageSalarybyState = {};
+	let temp1 = {};
+	data.forEach( function(d){
+		// console.log(d.STATE);
+		averageSalarybyState[d.STATE] = Number(d.TOT_EMP);
+		temp1[d.STATE] = d.TOT_EMP;
+	});
+	console.log(data);
+	console.log(averageSalarybyState);
+	console.log(temp1);
+});
+
+
+// d.OCC_TITLE = +d.OCC_TITLE;
+// d.ST = +d.ST;
+// d.STATE = +d.STATE;
+// d.TOT_EMP = d.TOT_EMP;
 
 
 // Template from https://bl.ocks.org/mbostock/4090848
