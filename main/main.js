@@ -17,32 +17,46 @@ const path = d3.geoPath();
 							// .projection(projection);
 //
 // //This is the main map element
-const svg = d3.select("svg");
+const svg = d3.select("map");
 
 //
 // //This is the tooltip element
-// const div = d3.select("map")
-// 								.append("div")
-// 								.classed("tooltip", true);
+const tooltip = d3.select("map")
+								.append("div")
+								.classed("tooltip", true);
 
+	tooltip.append("div")
+	    .attr("class", "average-salary");
+	tooltip.append("div")
+	    .attr("class", "median-salary");
+	tooltip.append("div")
+			.attr("class", "total-employee");
 
-//Reading CSV file::
-d3.csv("./data/state_wage_data2.csv", function(data){
+//Mouse on and off ineractions
+function handleMouseOn(d, i) {}
+
+function handleMouseOut(d, i) {}
+
+d3.queue()
+	.defer(d3.json, "./data/us_states_map.json")
+	.defer(d3.csv, "./data/state_wage_data2.csv")
+	.await(ready);
+
+// Template from https://bl.ocks.org/mbostock/4090848
+function ready(error, us, data) {
+  if (error) throw error;
+
 	let averageSalarybyState = {};
 	let medianSalarybyState = {};
 	let totalEmployeebyState = {};
+	let states = {};
+
 	data.forEach( function(d){
+		states[d.STATE] = d.STATE;
 		averageSalarybyState[d.STATE] = Number(d.A_MEAN);
 		medianSalarybyState[d.STATE] = Number(d.A_MEDIAN);
 		totalEmployeebyState[d.STATE] = Number(d.TOT_EMP);
 	});
-	// console.log(medianSalarybyState);
-	// console.log(averageSalarybyState);
-});
-
-// Template from https://bl.ocks.org/mbostock/4090848
-d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
-  if (error) throw error;
 
   svg.append("g")
       .attr("class", "states")
@@ -54,4 +68,4 @@ d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
   svg.append("path")
       .attr("class", "state-borders")
       .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
-});
+}
