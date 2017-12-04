@@ -1,12 +1,12 @@
 body {
-  background: #a5bcd4;
+  /*background: #a5bcd4;*/
 }
 
 button {
   padding: 10px;
 }
 
-.display {
+.container {
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -25,6 +25,9 @@ button {
   justify-content: space-around;
 }
 
+.tooltip {
+  opacity: 0;
+}
 
 .states :hover {
   fill: blue;
