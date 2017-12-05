@@ -23,9 +23,10 @@ const svg = d3.select("svg");
 						 	// 	}));
 
 // //This is the tooltip element
-const tooltip = d3.select("map")
+const tooltip = svg.append("g")
 								.append("div")
 								.classed("tooltip", true);
+
 
 	tooltip.append("div")
 	    .attr("class", "average-salary");
@@ -56,19 +57,19 @@ d3.csv("./data/state_wage_data2.csv", function(data){
 // d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
 d3.json("data/us_states_map.json", function(error, us) {
   if (error) throw error;
-
-	  svg.append("g")
-	      .attr("class", "states")
-	    .selectAll("path")
+  svg.append("g")
+			.selectAll("path")
+			.attr("class", "states")
 	    .data(topojson.feature(us, us.objects.states).features)
-	    .enter().append("path")
-	      .attr("d", path)
+	    .enter()
+				.append("path")
+		    .attr("d", path)
 				.on("mouseover", function(){
-					// console.log("on");
+					console.log("on");
 					tooltip.style("display", null);
 				})
 				.on("mouseout", function(){
-					// console.log("out");
+					console.log("out");
 					tooltip.style("display", "none");
 				})
 				.on("mousemove", function(){
@@ -79,7 +80,7 @@ d3.json("data/us_states_map.json", function(error, us) {
 					tooltip.select("text").text("hello");
 				});
 
-	  svg.append("path")
-	      .attr("class", "state-borders")
-	      .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+  svg.append("path")
+      .attr("class", "state-borders")
+      .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
 });
