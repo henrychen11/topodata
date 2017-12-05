@@ -4,7 +4,7 @@
   flex-direction: column;
   height: 100px;
   width: 100%;
-}
+}*/
 
 .page-header {
   width: 100%;
@@ -17,14 +17,6 @@
   justify-content: space-around;
 }
 
-.tooltip {
-  opacity: 0;
-}*/
-
-.states :hover {
-  fill: red;
-}
-
 .state-borders {
   fill: none;
   stroke: #fff;
@@ -32,4 +24,10 @@
   stroke-linejoin: round;
   stroke-linecap: round;
   pointer-events: none;
+}
+
+.tooltip {
+  position: absolute;
+  border: 5px solid green;
+  z-index: 10;
 }

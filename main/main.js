@@ -17,15 +17,19 @@ const path = d3.geoPath()
 							.projection(projection);
 //
 // //This is the main map element
-const svg = d3.select("svg");
+const svg = d3.select(".map-container")
+							.append("svg")
+							.attr("height", height)
+							.attr("width", width);
 							// .call(d3.zoom().on("zoom", function () {
 						  //   svg.attr("transform", d3.event.transform);
 						 	// 	}));
 
 // //This is the tooltip element
-const tooltip = d3.select("map")
-								.append("div")
-								.classed("tooltip", true);
+var tooltip = d3.select(".map-container").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0);
+
 
 	tooltip.append("div")
 	    .attr("class", "average-salary");
@@ -61,22 +65,37 @@ d3.json("data/us_states_map.json", function(error, us) {
 	      .attr("class", "states")
 	    .selectAll("path")
 	    .data(topojson.feature(us, us.objects.states).features)
-	    .enter().append("path")
+	    .enter()
+				.append("path")
 	      .attr("d", path)
-				.on("mouseover", function(){
-					// console.log("on");
-					tooltip.style("display", null);
+				.on("mouseover", function(d, i){
+					d3.select(this).style("fill", "yellow");
+					console.log(tooltip);
+
+					tooltip.transition().duration(250)
+               .style("opacity", 1);
+					d3.select(".average-salary").html("d3 selected element");
+					tooltip.select(".average-salary").html("lalalalallalala");
+					//tooltip.style("display", "inline-block");
+					tooltip.style("display", "inline");
 				})
-				.on("mouseout", function(){
-					// console.log("out");
-					tooltip.style("display", "none");
-				})
-				.on("mousemove", function(){
+				.on("mousemove", function(d, i){
 					let xPos = d3.mouse(this)[0] - 15;
 					let yPos = d3.mouse(this)[1] - 55;
 					// console.log("move", xPos, yPos);
-					tooltip.attr("transform", "translate(" + xPos + "," + yPos + ")");
-					tooltip.select("text").text("hello");
+					// tooltip.attr("transform", "translate(" + xPos + "," + yPos + ")");
+					// tooltip.select("text").text("hello");
+					return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");
+				})
+				.on("mouseout", function(d, i){
+					d3.select(this)
+	          .transition()
+	          .duration(250)
+	          .ease(d3.easeLinear)
+	          .style("opacity", 0.75);
+						d3.select(this).style("fill", "black");
+	        	tooltip.transition().duration(250)
+	               .style("opacity", 0);
 				});
 
 	  svg.append("path")
