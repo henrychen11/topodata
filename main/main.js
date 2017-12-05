@@ -11,19 +11,22 @@ const height = h - margin.top - margin.bottom;
 //Not used
 const projection =  d3.geoAlbersUsa()
 										.translate([width/2, height/2])
-										.scale([500]);
+										.scale([1000]);
 
-const path = d3.geoPath();
-							// .projection(projection);
+const path = d3.geoPath()
+							.projection(projection);
 //
 // //This is the main map element
-const svg = d3.select("map");
+const svg = d3.select("svg");
+							// .call(d3.zoom().on("zoom", function () {
+						  //   svg.attr("transform", d3.event.transform);
+						 	// 	}));
 
-//
 // //This is the tooltip element
 const tooltip = d3.select("map")
 								.append("div")
-								.classed("tooltip", true);
+								.attr("class", "tooltip")
+								.style("display", "none");
 
 	tooltip.append("div")
 	    .attr("class", "average-salary");
@@ -36,36 +39,49 @@ const tooltip = d3.select("map")
 function handleMouseOn(d, i) {}
 
 function handleMouseOut(d, i) {}
-
-d3.queue()
-	.defer(d3.json, "./data/us_states_map.json")
-	.defer(d3.csv, "./data/state_wage_data2.csv")
-	.await(ready);
-
-// Template from https://bl.ocks.org/mbostock/4090848
-function ready(error, us, data) {
-  if (error) throw error;
-
+//Reading CSV file::
+d3.csv("./data/state_wage_data2.csv", function(data){
 	let averageSalarybyState = {};
 	let medianSalarybyState = {};
 	let totalEmployeebyState = {};
-	let states = {};
-
 	data.forEach( function(d){
-		states[d.STATE] = d.STATE;
 		averageSalarybyState[d.STATE] = Number(d.A_MEAN);
 		medianSalarybyState[d.STATE] = Number(d.A_MEDIAN);
 		totalEmployeebyState[d.STATE] = Number(d.TOT_EMP);
 	});
+	console.log(medianSalarybyState);
+	console.log(averageSalarybyState);
+});
 
-  svg.append("g")
+// Template from https://bl.ocks.org/mbostock/4090848
+// d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
+d3.json("../data/us_states_map.json", function(error, us) {
+  if (error) throw error;
+	console.log(us);
+
+  svg.selectAll("path")
       .attr("class", "states")
-    .selectAll("path")
-    .data(topojson.feature(us, us.objects.states).features)
-    .enter().append("path")
-      .attr("d", path);
+	    .data(topojson.feature(us, us.objects.states).features)
+	    .enter()
+				.append("path")
+		    .attr("d", path)
+				.on("mouseover", function(){
+					// console.log("on");
+					tooltip.style("display", null);
+				})
+				.on("mouseout", function(){
+					// console.log("out");
+					tooltip.style("display", "none");
+				})
+				.on("mousemove", function(){
+					// console.log("move");
+					let xPos = d3.mouse(this)[0] - 15;
+					let yPos = d3.mouse(this)[1] - 55;
+					tooltip.attr("transform", "translate(" + xPos + "," + yPos + ")");
+					tooltip.select("text").text("hello");
+				});
 
   svg.append("path")
       .attr("class", "state-borders")
       .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
-}
+});

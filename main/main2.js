@@ -11,15 +11,17 @@ const height = h - margin.top - margin.bottom;
 //Not used
 const projection =  d3.geoAlbersUsa()
 										.translate([width/2, height/2])
-										.scale([500]);
+										.scale([1000]);
 
-const path = d3.geoPath();
-							// .projection(projection);
+const path = d3.geoPath()
+							.projection(projection);
 //
 // //This is the main map element
-const svg = d3.select("map");
+const svg = d3.select("svg");
+							// .call(d3.zoom().on("zoom", function () {
+						  //   svg.attr("transform", d3.event.transform);
+						 	// 	}));
 
-//
 // //This is the tooltip element
 const tooltip = d3.select("map")
 								.append("div")
@@ -46,20 +48,22 @@ d3.csv("./data/state_wage_data2.csv", function(data){
 		medianSalarybyState[d.STATE] = Number(d.A_MEDIAN);
 		totalEmployeebyState[d.STATE] = Number(d.TOT_EMP);
 	});
-	// console.log(medianSalarybyState);
-	// console.log(averageSalarybyState);
+	console.log(medianSalarybyState);
+	console.log(averageSalarybyState);
 });
 
 // Template from https://bl.ocks.org/mbostock/4090848
-d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
+// d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
+d3.json("../data/us_states_map.json", function(error, us) {
   if (error) throw error;
 
   svg.append("g")
       .attr("class", "states")
-    .selectAll("path")
-    .data(topojson.feature(us, us.objects.states).features)
-    .enter().append("path")
-      .attr("d", path);
+	    .selectAll("path")
+	    .data(topojson.feature(us, us.objects.states).features)
+	    .enter()
+				.append("path")
+		    .attr("d", path);
 
   svg.append("path")
       .attr("class", "state-borders")
