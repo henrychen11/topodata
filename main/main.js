@@ -3,18 +3,18 @@ import * as topojson from 'topojson';
 
 const w = 1000;
 const h = 800;
-const margin = {	top: 20,	bottom: 20,	left: 20,	right: 20 };
+const margin = {	top: 10,	bottom: 10,	left: 10,	right: 10 };
 
 const width = w - margin.left - margin.right;
 const height = h - margin.top - margin.bottom;
 
 const projection =  d3.geoAlbersUsa()
 						.translate([width/2, height/2])
-						.scale([1000]);
+						.scale([1200]);
 
 const path = d3.geoPath()
 				.projection(projection);
-//
+
 // //This is the main map element
 const svg = d3.select(".map-container")
 				.append("svg")
@@ -39,7 +39,6 @@ var tooltip = d3.select(".map-container").append("div")
 	tooltip.append("div")
 			.attr("class", "total-employee");
 
-
 d3.queue()
 	.defer(d3.json, "data/us_states_map.json")
 	.defer(d3.csv, "data/state_wage_data2.csv")
@@ -57,24 +56,30 @@ function ready(error, us, data) {
 			medianSalarybyState[d.STATE] = Number(d.A_MEDIAN);
 			totalEmployeebyState[d.STATE] = Number(d.TOT_EMP);
 		});
-		console.log(averageSalarybyState);
+
+		var color = d3.scaleThreshold()
+		.domain([10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000])
+		.range(['#ffffe0','#e1ebc3','#c4d7a7','#a7c38c','#8ab070','#6e9d56','#51893c','#317722','#006400']);
+
 	  svg.append("g")
 	      .attr("class", "states")
 	    .selectAll("path")
 	    .data(topojson.feature(us, us.objects.states).features)
-	    .enter()
+		.enter()
 				.append("path")
-	      		.attr("d", path)
+				.attr("d", path)
+				.style("fill", function(d){
+					return color(averageSalarybyState[d.properties.NAME])
+				})
 				.on("mouseover", function(d, i){
-					d3.select(this).style("fill", "yellow").transition().duration(350).style("cursor", "pointer")
+					d3.select(this).style("fill", "yellow").transition().duration(300).style("cursor", "pointer").style("display", "block")
+					//Tooltip transitions
 					tooltip.transition().duration(350).style("opacity", 1);
-					console.log(d)
 					tooltip.select(".state-name").html(d.properties.NAME);
 					tooltip.select(".state-abbr").html(d.properties.STUSPS);
 					tooltip.select(".average-salary").html("Avg. salary: " + averageSalarybyState[d.properties.NAME]);
-					tooltip.select(".median-salary").html("Median Salary: " + d.properties.A_MEDIAN);
-					tooltip.select(".total-employee").html(d.properties.TOT_EMP);
-					tooltip.style("display", "block");
+					tooltip.select(".median-salary").html("Median Salary: " + medianSalarybyState[d.properties.NAME]);
+					tooltip.select(".total-employee").html("Total Population: " + totalEmployeebyState[d.properties.NAME]);
 				})
 				.on("mousemove", function(d, i){
 					let xPos = d3.mouse(this)[0] - 15;
@@ -86,14 +91,15 @@ function ready(error, us, data) {
 				})
 				.on("mouseout", function(d, i){
 					d3.select(this)
-	          .transition()
-	          .duration(250)
-	          .ease(d3.easeLinear)
-	          .style("opacity", 0.75);
-						d3.select(this).style("fill", "black");
-	        	tooltip.transition().duration(250)
-	               .style("opacity", 0);
-				});
+						.transition()
+						.duration(250)
+						.ease(d3.easeLinear)
+						.style("opacity", 1)
+						.style("fill", function(d){
+							return color(averageSalarybyState[d.properties.NAME])
+						});
+					tooltip.transition().duration(350).style("opacity", 0);
+					});
 
 	  svg.append("path")
 	      .attr("class", "state-borders")
