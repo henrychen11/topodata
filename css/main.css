@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   width: auto;
   background: #BFA588;
   font-family: 'Sarala', sans-serif;

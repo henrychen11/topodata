@@ -28,7 +28,10 @@ const svg = d3.select(".map-container")
 var tooltip = d3.select(".map-container").append("div")
                 .attr("class", "tooltip")
 				.style("opacity", 0);
-				
+	tooltip.append("div")
+			.attr("class", "state-name");
+	tooltip.append("div")
+			.attr("class", "state-abbr");
 	tooltip.append("div")
 	    .attr("class", "average-salary");
 	tooltip.append("div")
@@ -36,49 +39,42 @@ var tooltip = d3.select(".map-container").append("div")
 	tooltip.append("div")
 			.attr("class", "total-employee");
 
-//Reading CSV file
-let averageSalarybyState = {};
-let medianSalarybyState = {};
-let totalEmployeebyState = {};
 
-d3.csv("./data/state_wage_data2.csv", function(data){
-	data.forEach( function(d){
-		averageSalarybyState[d.STATE] = Number(d.A_MEAN);
-		medianSalarybyState[d.STATE] = Number(d.A_MEDIAN);
-		totalEmployeebyState[d.STATE] = Number(d.TOT_EMP);
-	});
-});
-
-var max = d3.max(d3.entries(averageSalarybyState), function(d) {
-    return d3.max(d3.entries(d.value), function(e) {
-        return d3.max(e.value);
-    });
-});
-
-console.log(max);
+d3.queue()
+	.defer(d3.json, "data/us_states_map.json")
+	.defer(d3.csv, "data/state_wage_data2.csv")
+	.await(ready);
 
 // Template from https://bl.ocks.org/mbostock/4090848
-// d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
-d3.json("data/us_states_map.json", function(error, us) {
-  if (error) throw error;
 
+function ready(error, us, data) {
+  if (error) throw error;
+		let averageSalarybyState = {};
+		let medianSalarybyState = {};
+		let totalEmployeebyState = {};
+		data.forEach( function(d) {
+			averageSalarybyState[d.STATE] = Number(d.A_MEAN);
+			medianSalarybyState[d.STATE] = Number(d.A_MEDIAN);
+			totalEmployeebyState[d.STATE] = Number(d.TOT_EMP);
+		});
+		console.log(averageSalarybyState);
 	  svg.append("g")
 	      .attr("class", "states")
 	    .selectAll("path")
 	    .data(topojson.feature(us, us.objects.states).features)
 	    .enter()
 				.append("path")
-	      .attr("d", path)
+	      		.attr("d", path)
 				.on("mouseover", function(d, i){
-					d3.select(this).style("fill", "yellow");
-					console.log(tooltip);
-
-					tooltip.transition().duration(250)
-               .style("opacity", 1);
-					d3.select(".average-salary").html("d3 selected element");
-					tooltip.select(".average-salary").html("lalalalallalala");
-					//tooltip.style("display", "inline-block");
-					tooltip.style("display", "inline");
+					d3.select(this).style("fill", "yellow").transition().duration(350).style("cursor", "pointer")
+					tooltip.transition().duration(350).style("opacity", 1);
+					console.log(d)
+					tooltip.select(".state-name").html(d.properties.NAME);
+					tooltip.select(".state-abbr").html(d.properties.STUSPS);
+					tooltip.select(".average-salary").html("Avg. salary: " + averageSalarybyState[d.properties.NAME]);
+					tooltip.select(".median-salary").html("Median Salary: " + d.properties.A_MEDIAN);
+					tooltip.select(".total-employee").html(d.properties.TOT_EMP);
+					tooltip.style("display", "block");
 				})
 				.on("mousemove", function(d, i){
 					let xPos = d3.mouse(this)[0] - 15;
@@ -102,4 +98,4 @@ d3.json("data/us_states_map.json", function(error, us) {
 	  svg.append("path")
 	      .attr("class", "state-borders")
 	      .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
-});
+};
