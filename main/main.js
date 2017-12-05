@@ -8,29 +8,27 @@ const margin = {	top: 20,	bottom: 20,	left: 20,	right: 20 };
 const width = w - margin.left - margin.right;
 const height = h - margin.top - margin.bottom;
 
-//Not used
 const projection =  d3.geoAlbersUsa()
-										.translate([width/2, height/2])
-										.scale([1000]);
+						.translate([width/2, height/2])
+						.scale([1000]);
 
 const path = d3.geoPath()
-							.projection(projection);
+				.projection(projection);
 //
 // //This is the main map element
 const svg = d3.select(".map-container")
-							.append("svg")
-							.attr("height", height)
-							.attr("width", width);
-							// .call(d3.zoom().on("zoom", function () {
-						  //   svg.attr("transform", d3.event.transform);
-						 	// 	}));
+				.append("svg")
+				.attr("height", height)
+				.attr("width", width);
+				// .call(d3.zoom().on("zoom", function () {
+				//   svg.attr("transform", d3.event.transform);
+				// 	}));
 
 // //This is the tooltip element
 var tooltip = d3.select(".map-container").append("div")
                 .attr("class", "tooltip")
-                .style("opacity", 0);
-
-
+				.style("opacity", 0);
+				
 	tooltip.append("div")
 	    .attr("class", "average-salary");
 	tooltip.append("div")
@@ -38,23 +36,26 @@ var tooltip = d3.select(".map-container").append("div")
 	tooltip.append("div")
 			.attr("class", "total-employee");
 
-//Mouse on and off ineractions
-function handleMouseOn(d, i) {}
+//Reading CSV file
+let averageSalarybyState = {};
+let medianSalarybyState = {};
+let totalEmployeebyState = {};
 
-function handleMouseOut(d, i) {}
-//Reading CSV file::
 d3.csv("./data/state_wage_data2.csv", function(data){
-	let averageSalarybyState = {};
-	let medianSalarybyState = {};
-	let totalEmployeebyState = {};
 	data.forEach( function(d){
 		averageSalarybyState[d.STATE] = Number(d.A_MEAN);
 		medianSalarybyState[d.STATE] = Number(d.A_MEDIAN);
 		totalEmployeebyState[d.STATE] = Number(d.TOT_EMP);
 	});
-	console.log(medianSalarybyState);
-	console.log(averageSalarybyState);
 });
+
+var max = d3.max(d3.entries(averageSalarybyState), function(d) {
+    return d3.max(d3.entries(d.value), function(e) {
+        return d3.max(e.value);
+    });
+});
+
+console.log(max);
 
 // Template from https://bl.ocks.org/mbostock/4090848
 // d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
