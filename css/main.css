@@ -18,13 +18,17 @@
   width: 100%;
   font-size: 35px;
   text-align: center;
-  min-height: 100px;
+  min-height: 30px;
+}
+
+.year-label {
+  padding: 15px
 }
 
 .navbar {
   display: flex;
   flex-direction: column;
-  min-height: 120px;
+  min-height: 100px;
   justify-content: center;
   align-items: center;
 }
@@ -32,9 +36,10 @@
 /* Template from CSS W3 */
 .slider {
   -webkit-appearance: none;
-  width: 400px;
+  font-size: 15px;
+  width: 450px;
   height: 15px;
-  border-radius: 5px;   
+  border-radius: 5px;
   background: #d3d3d3;
   outline: none;
   opacity: 0.7;
@@ -47,7 +52,7 @@
   appearance: none;
   width: 25px;
   height: 25px;
-  border-radius: 50%; 
+  border-radius: 50%;
   background: #4CAF50;
   cursor: pointer;
 }
@@ -86,14 +91,42 @@
 
 .side-bar {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
+  flex-direction: column;
+  width: 120px;
+  align-items: center;
 }
 
 .legend {
   font-size: 14px;
   display: flex;
   justify-content: center;
-  border: 1px solid black;
+  /*border: 1px solid black;*/
+  /*width: 120px;*/
+  margin: 3px auto;
 }
 
-/* Slider default templates from CSS W3 */
+.legend-color {
+  margin-left: 15px;
+  width: 30px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px white;
+}
+
+.stats-container {
+  border: 2px solid black;
+  width: 100%;
+  min-height: 200px;
+}
+
+.footer {
+  min-height: 30px;
+  width: 100%;
+  z-index: 3;
+}
+
+.footer a, i {
+  display: block;
+  min-height: 30px;
+  min-width: 30px;
+}

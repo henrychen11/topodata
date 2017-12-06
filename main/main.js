@@ -71,7 +71,7 @@ function ready(error, us, data) {
     // .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
     // .append("g")
 	// .attr("id", "states");
-	
+
 	// g.selectAll("text")
 	// .data(topojson.feature(us, us.objects.states).features)
 	// .enter()
@@ -142,28 +142,35 @@ const sideBar = d3.select('.map-container')
 
 const legend = sideBar.append("g")
 .attr("class", "legend-container")
-.attr("transform", "translate(" + (width) + "," + 20 + ")")
+// .attr("transform", "translate(" + (width) + "," + 20 + ")")
 .selectAll("g")
 .data([10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000])
 .enter().append("g").attr("class", "legend")
 
 //Legend position
-legend.append("text")
-.attr("y", function(d, i){
-return i * 22;
-})
-.attr("x", 5 )
+legend.append("div")
+.attr("class", "legend-text")
 .text(function(d) {
 return "$" + d3.format(",")(d);
 })
 
-legend.append("rect")
-.attr("y", function(d, i){
-return i * 22 - 13;
+legend.append("div")
+.attr("class", "legend-color")
+.style("background-color", function(d, i){
+	return colorScale(d);
 })
-.attr("x", 65 )
-.style("fill", function(d, i){
-return colorScale(d);
-})
-.attr("height", "15px")
-.attr("width", "20px")
+
+d3.select(".side-bar")
+	.append("div")
+	.attr("class", "stats-container");
+
+d3.select(".side-bar")
+	.append("div")
+	.attr("class", "footer");
+
+d3.select(".footer")
+	// .html('<p>asdfasdf</p>');
+	.html('<a class="footer-logo" href="http://github.com/henrychen11" target="_blank"><i className="fa fa-github" aria-hidden="true"></i></a>');
+	// .appendHTML('<a href="http://github.com/henrychen11" target="_blank">
+	// 								<i className="fa fa-github" aria-hidden="true"></i>
+	// 							</a>');
