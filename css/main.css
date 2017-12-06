@@ -10,6 +10,7 @@
 
 .map-container {
   display: flex;
+  flex-direction: row;
   justify-content: center;
 }
 
@@ -43,9 +44,15 @@
   background-color: gray;
 }
 
-.legend {
+.side-bar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* .legend {
   height: 100px;
   width: 100px;
   z-index: 2;
   border: 1px solid black;
-}
+} */
+

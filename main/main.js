@@ -110,29 +110,26 @@ function ready(error, us, data) {
 		  var legendRectSize = 18;
 		  var legendSpacing = 4;
 
-		  var legend = d3.select('.map-container')
-		  .data(color.domain())
-		  .enter()
-		  .append('g')
-		  .attr('class', 'legend')
-		  .attr('transform', function(d, i) {
-			var height = legendRectSize + legendSpacing;
-			var offset =  height * color.domain().length / 2;
-			var horz = -2 * legendRectSize;
-			var vert = i * height - offset;
-			return 'translate(' + horz + ',' + vert + ')';
-		  });
+		  const sideBar = d3.select('.map-container')
+							.append('div')
+							.attr("class", "side-bar")
 
-		  legend.append('rect')
-		  .attr('width', legendRectSize)
-		  .attr('height', legendRectSize)
-		  .style('fill', color)
-		  .style('stroke', color);
-
-		  legend.append('text')
-		  .attr('x', legendRectSize + legendSpacing)
-		  .attr('y', legendRectSize - legendSpacing)
-		  .text(function(d) { return d; });
+		const legend = svg.append("g")
+							.attr("class", "legend")
+							.attr("transform", "translate(" + (width - 100) + "," + 20 + ")")
+							.selectAll("g")
+							.data(["10000", "20000", "30000", "40000", "50000", "60000", "70000", "80000", "90000"])
+							.enter().append("g")
+							
+		legend.append("text")
+				.attr("y", function(d, i){
+					return i * 30 + 5;
+				})
+				.attr("x", 5 )
+				.text(function(d) {
+					return d;
+				})
+									
 };
 
 //Adding the legend
