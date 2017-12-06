@@ -12,6 +12,11 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+  position: relative;
+}
+
+svg {
+  width: 100%;
 }
 
 .page-header {
@@ -49,10 +54,25 @@
   justify-content: flex-end;
 }
 
-/* .legend {
-  height: 100px;
-  width: 100px;
-  z-index: 2;
+
+.legend {
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
   border: 1px solid black;
+}
+
+/* .slider {
+  position: absolute;
+  top: 400px;
+  right: 100px;
+  direction: rtl;
+  width: 150px;
+  height: 10px;
 } */
 
+.slider-container {
+  position: absolute;
+  
+  left: 950px;
+}
