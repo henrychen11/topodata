@@ -120,13 +120,12 @@
 }
 
 .footer {
+  display: flex;
+  justify-content: space-around;
   min-height: 30px;
   width: 100%;
-  z-index: 3;
 }
 
-.footer a, i {
-  display: block;
-  min-height: 30px;
-  min-width: 30px;
+.footer-logo {
+  font-size: 40px;
 }

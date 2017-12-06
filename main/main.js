@@ -53,7 +53,7 @@ const colorScale = d3.scaleThreshold()
 const slider = d3.select(".slider")
 					.on("input", function() {
 						// console.log(this.value)
-						d3.select(".year-label").html("Current Year: " + this.value)
+						d3.select(".year-label").html("Current Year: " + this.value);
 						updateYear(Number(this.value));
 					});
 
@@ -61,7 +61,7 @@ function updateYear(year){
 	d3.queue()
 	.defer(d3.json, "data/us_states_map.json")
 	.defer(d3.csv, `data/data${year}.csv`)
-	.await(ready)
+	.await(ready);
 }
 
 
@@ -99,10 +99,10 @@ function ready(error, us, data) {
 				.append("path")
 				.attr("d", path)
 				.style("fill", function(d){
-					return colorScale(averageSalarybyState[d.properties.NAME])
+					return colorScale(averageSalarybyState[d.properties.NAME]);
 				})
 				.on("mouseover", function(d, i){
-					d3.select(this).style("fill", "yellow").transition().duration(300).style("cursor", "pointer").style("display", "block")
+					d3.select(this).style("fill", "yellow").transition().duration(300).style("cursor", "pointer").style("display", "block");
 					//Tooltip transitions
 					tooltip.transition().duration(350).style("opacity", 1);
 					tooltip.select(".state-name").html(d.properties.NAME);
@@ -126,7 +126,7 @@ function ready(error, us, data) {
 						.ease(d3.easeLinear)
 						.style("opacity", 1)
 						.style("fill", function(d){
-							return colorScale(averageSalarybyState[d.properties.NAME])
+							return colorScale(averageSalarybyState[d.properties.NAME]);
 						});
 					tooltip.transition().duration(350).style("opacity", 0);
 					});
@@ -134,31 +134,31 @@ function ready(error, us, data) {
 	  svg.append("path")
 	      .attr("class", "state-borders")
 		  .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
-};
+}
 
 const sideBar = d3.select('.map-container')
 .append('div')
-.attr("class", "side-bar")
+.attr("class", "side-bar");
 
 const legend = sideBar.append("g")
 .attr("class", "legend-container")
 // .attr("transform", "translate(" + (width) + "," + 20 + ")")
 .selectAll("g")
 .data([10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000])
-.enter().append("g").attr("class", "legend")
+.enter().append("g").attr("class", "legend");
 
 //Legend position
 legend.append("div")
 .attr("class", "legend-text")
 .text(function(d) {
 return "$" + d3.format(",")(d);
-})
+});
 
 legend.append("div")
 .attr("class", "legend-color")
 .style("background-color", function(d, i){
 	return colorScale(d);
-})
+});
 
 d3.select(".side-bar")
 	.append("div")
@@ -169,8 +169,11 @@ d3.select(".side-bar")
 	.attr("class", "footer");
 
 d3.select(".footer")
-	// .html('<p>asdfasdf</p>');
-	.html('<a class="footer-logo" href="http://github.com/henrychen11" target="_blank"><i className="fa fa-github" aria-hidden="true"></i></a>');
-	// .appendHTML('<a href="http://github.com/henrychen11" target="_blank">
-	// 								<i className="fa fa-github" aria-hidden="true"></i>
-	// 							</a>');
+	.append("div")
+	.attr("class", "footer-logo")
+	.html('<a href="http://github.com/henrychen11" target="_blank"><i class="fa fa-github" aria-hidden="true"></i></a>');
+
+d3.select(".footer")
+	.append("div")
+	.attr("class", "footer-logo")
+	.html('<a href="http://www.linkedin.com/in/henrychen11/" target="_blank"><i class="fa fa-linkedin-square" aria-hidden="true"></i>');
