@@ -46,8 +46,8 @@ d3.queue()
 
 // Template from https://bl.ocks.org/mbostock/4090848
 const colorScale = d3.scaleThreshold()
-.domain([10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000])
-.range(['#ffffe0','#e1ebc3','#c4d7a7','#a7c38c','#8ab070','#6e9d56','#51893c','#317722','#006400']);
+.domain([40000, 45000, 50000, 55000, 60000, 65000, 70000, 75000, 80000, 85000, 90000])
+.range(['#90ee90','#81df80','#75ce73','#6cbf6b','#65ae67','#629c68','#618b6f','#62777c','#616194','#5745bb','#0000ff']);
 
 
 const slider = d3.select(".slider")
@@ -64,7 +64,8 @@ function updateYear(year){
 	.await(ready);
 }
 
-
+const selected_state = "California";
+let states = [];
 
 function ready(error, us, data) {
 	// var g = svg.append("g")
@@ -85,7 +86,9 @@ function ready(error, us, data) {
 		let averageSalarybyState = {};
 		let medianSalarybyState = {};
 		let totalEmployeebyState = {};
+
 		data.forEach( function(d) {
+			states.push(d.STATE);
 			averageSalarybyState[d.STATE] = Number(d.A_MEAN);
 			medianSalarybyState[d.STATE] = Number(d.A_MEDIAN);
 			totalEmployeebyState[d.STATE] = Number(d.TOT_EMP);
@@ -112,11 +115,6 @@ function ready(error, us, data) {
 					tooltip.select(".total-employee").html("Total Population: " + totalEmployeebyState[d.properties.NAME]);
 				})
 				.on("mousemove", function(d, i){
-					let xPos = d3.mouse(this)[0] - 15;
-					let yPos = d3.mouse(this)[1] - 55;
-					// console.log("move", xPos, yPos);
-					// tooltip.attr("transform", "translate(" + xPos + "," + yPos + ")");
-					// tooltip.select("text").text("hello");
 					return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");
 				})
 				.on("mouseout", function(d, i){
@@ -134,7 +132,25 @@ function ready(error, us, data) {
 	  svg.append("path")
 	      .attr("class", "state-borders")
 		  .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+
+			const options = select
+													.selectAll("option")
+													.data(states)
+													.enter()
+														.append("option")
+														.text(function(d) {return d;});
+
+			select.on("change", function() {
+				updateStats(d3.event.target.value);
+			});
 }
+
+function updateStats(state){
+	d3.select(".stats-container").append("div").text("1");
+	d3.select(".stats-container").append("div").text("2");
+	d3.select(".stats-container").append("div").text("3");
+}
+
 
 const sideBar = d3.select('.map-container')
 .append('div')
@@ -144,7 +160,7 @@ const legend = sideBar.append("g")
 .attr("class", "legend-container")
 // .attr("transform", "translate(" + (width) + "," + 20 + ")")
 .selectAll("g")
-.data([10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000])
+.data([40000, 45000, 50000, 55000, 60000, 65000, 70000, 75000, 80000, 85000, 90000])
 .enter().append("g").attr("class", "legend");
 
 //Legend position
@@ -160,10 +176,20 @@ legend.append("div")
 	return colorScale(d);
 });
 
+//Stats Bar
 d3.select(".side-bar")
 	.append("div")
 	.attr("class", "stats-container");
 
+d3.select(".stats-container")
+	.attr("casss", "stats-label")
+	.text("Net Change");
+
+const select = d3.select(".stats-container")
+									.append("select")
+									.attr("type", "select");
+
+//Footer
 d3.select(".side-bar")
 	.append("div")
 	.attr("class", "footer");
