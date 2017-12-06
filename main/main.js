@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 import * as topojson from 'topojson';
 
 const w = 1000;
-const h = 800;
+const h = 600;
 const margin = {	top: 10,	bottom: 10,	left: 10,	right: 10 };
 
 const width = w - margin.left - margin.right;
@@ -45,6 +45,9 @@ d3.queue()
 	.await(ready);
 
 // Template from https://bl.ocks.org/mbostock/4090848
+const colorScale = d3.scaleThreshold()
+.domain([10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000])
+.range(['#ffffe0','#e1ebc3','#c4d7a7','#a7c38c','#8ab070','#6e9d56','#51893c','#317722','#006400']);
 
 function ready(error, us, data) {
   if (error) throw error;
@@ -57,19 +60,15 @@ function ready(error, us, data) {
 			totalEmployeebyState[d.STATE] = Number(d.TOT_EMP);
 		});
 
-		var color = d3.scaleThreshold()
-		.domain([10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000])
-		.range(['#ffffe0','#e1ebc3','#c4d7a7','#a7c38c','#8ab070','#6e9d56','#51893c','#317722','#006400']);
-
 	  svg.append("g")
 	      .attr("class", "states")
-	    .selectAll("path")
-	    .data(topojson.feature(us, us.objects.states).features)
-		.enter()
+			.selectAll("path")
+			.data(topojson.feature(us, us.objects.states).features)
+			.enter()
 				.append("path")
 				.attr("d", path)
 				.style("fill", function(d){
-					return color(averageSalarybyState[d.properties.NAME])
+					return colorScale(averageSalarybyState[d.properties.NAME])
 				})
 				.on("mouseover", function(d, i){
 					d3.select(this).style("fill", "yellow").transition().duration(300).style("cursor", "pointer").style("display", "block")
@@ -96,12 +95,53 @@ function ready(error, us, data) {
 						.ease(d3.easeLinear)
 						.style("opacity", 1)
 						.style("fill", function(d){
-							return color(averageSalarybyState[d.properties.NAME])
+							return colorScale(averageSalarybyState[d.properties.NAME])
 						});
 					tooltip.transition().duration(350).style("opacity", 0);
 					});
 
 	  svg.append("path")
 	      .attr("class", "state-borders")
-	      .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+		  .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+
+					
+		  var color = d3.scaleOrdinal(d3.schemeCategory20b);
+
+		  var legendRectSize = 18;
+		  var legendSpacing = 4;
+
+		  var legend = d3.select('.map-container')
+		  .data(color.domain())
+		  .enter()
+		  .append('g')
+		  .attr('class', 'legend')
+		  .attr('transform', function(d, i) {
+			var height = legendRectSize + legendSpacing;
+			var offset =  height * color.domain().length / 2;
+			var horz = -2 * legendRectSize;
+			var vert = i * height - offset;
+			return 'translate(' + horz + ',' + vert + ')';
+		  });
+
+		  legend.append('rect')
+		  .attr('width', legendRectSize)
+		  .attr('height', legendRectSize)
+		  .style('fill', color)
+		  .style('stroke', color);
+
+		  legend.append('text')
+		  .attr('x', legendRectSize + legendSpacing)
+		  .attr('y', legendRectSize - legendSpacing)
+		  .text(function(d) { return d; });
 };
+
+//Adding the legend
+	// var legend = d3.select(".map-container")
+	// 				.append("div")
+	// 				.attr("class", "legend")
+
+
+
+	// .data([10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000])
+	// .enter()
+

@@ -42,3 +42,10 @@
   font-size: 15px;
   background-color: gray;
 }
+
+.legend {
+  height: 100px;
+  width: 100px;
+  z-index: 2;
+  border: 1px solid black;
+}
