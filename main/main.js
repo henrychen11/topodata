@@ -66,6 +66,9 @@ function updateYear(year){
 
 const selected_state = "California";
 let states = [];
+let averageSalarybyState = {};
+let medianSalarybyState = {};
+let totalEmployeebyState = {};
 
 function ready(error, us, data) {
 	// var g = svg.append("g")
@@ -83,9 +86,7 @@ function ready(error, us, data) {
 	// .text(function (d) { return d.properties.abbr; });
 
   if (error) throw error;
-		let averageSalarybyState = {};
-		let medianSalarybyState = {};
-		let totalEmployeebyState = {};
+
 
 		data.forEach( function(d) {
 			states.push(d.STATE);
@@ -141,15 +142,27 @@ function ready(error, us, data) {
 														.text(function(d) {return d;});
 
 			select.on("change", function() {
+				console.log("event", d3.event.target.value);
 				updateStats(d3.event.target.value);
 			});
+
+			d3.select(".stats-container").append("div").attr("class", "state-label").text("Current State: ");
+			d3.select(".stats-container").append("div").attr("class", "avg-salary").text("Average Salary: ");
+			d3.select(".stats-container").append("div").attr("class", "med-salary").text("Median Salary: ");
+			d3.select(".stats-container").append("div").attr("class", "tot-emp").text("Total Employee: ");
+			updateStats("California");
 }
 
+
 function updateStats(state){
-	d3.select(".stats-container").append("div").text("1");
-	d3.select(".stats-container").append("div").text("2");
-	d3.select(".stats-container").append("div").text("3");
+	const st = d3.select(".state-label");
+	st.text("Current Year: " + state);
+	st.exit().remove();
+
+	const avg_sal = d3.select(".avg-salary");
+	avg_sal.text("Average Salary: " + averageSalarybyState[state]);
 }
+
 
 
 const sideBar = d3.select('.map-container')
