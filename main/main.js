@@ -49,9 +49,11 @@ const colorScale = d3.scaleThreshold()
 .domain([10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000])
 .range(['#ffffe0','#e1ebc3','#c4d7a7','#a7c38c','#8ab070','#6e9d56','#51893c','#317722','#006400']);
 
+
 const slider = d3.select(".slider")
 					.on("input", function() {
-						console.log(this.value)
+						// console.log(this.value)
+						d3.select(".year-label").html("Current Year: " + this.value)
 						updateYear(Number(this.value));
 					});
 
@@ -62,32 +64,23 @@ function updateYear(year){
 	.await(ready)
 }
 
-// function updateMap(error, data){
-// 	if (error) throw error;
-// 	let averageSalarybyState = {};
-// 	let medianSalarybyState = {};
-// 	let totalEmployeebyState = {};
-// 	data.forEach( function(d) {
-// 		averageSalarybyState[d.STATE] = Number(d.A_MEAN);
-// 		medianSalarybyState[d.STATE] = Number(d.A_MEDIAN);
-// 		totalEmployeebyState[d.STATE] = Number(d.TOT_EMP);
-// 	});
-// 	svg.append("g")
-// 	.attr("class", "states")
-// 	  .selectAll("path")
-// 	  .data(topojson.feature(us, us.objects.states).features)
-// 	  .enter()
-// 		  .append("path")
-// 		  .attr("d", path)
-// 		  .style("fill", function(d){
-// 			  return colorScale(averageSalarybyState[d.properties.NAME])
-// 		  })
-// }
 
-				
 
 function ready(error, us, data) {
-	console.log(data)
+	// var g = svg.append("g")
+    // .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
+    // .append("g")
+	// .attr("id", "states");
+	
+	// g.selectAll("text")
+	// .data(topojson.feature(us, us.objects.states).features)
+	// .enter()
+	// .append("text")
+	// .attr("transform", function (d) { return "translate(" + path.centroid(d) + ")"; })
+	// .attr("dx", function (d) { return d.properties.dx || "0"; })
+	// .attr("dy", function (d) { return d.properties.dy || "0.35em"; })
+	// .text(function (d) { return d.properties.abbr; });
+
   if (error) throw error;
 		let averageSalarybyState = {};
 		let medianSalarybyState = {};
@@ -141,38 +134,36 @@ function ready(error, us, data) {
 	  svg.append("path")
 	      .attr("class", "state-borders")
 		  .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
-
-
-		  const sideBar = d3.select('.map-container')
-							.append('div')
-							.attr("class", "side-bar")
-
-		const legend = svg.append("g")
-							.attr("class", "legend-container")
-							.attr("transform", "translate(" + (width) + "," + 20 + ")")
-							.selectAll("g")
-							.data([10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000])
-							.enter().append("g").attr("class", "legend")
-		
-		//Legend position
-		legend.append("text")
-				.attr("y", function(d, i){
-					return i * 22;
-				})
-				.attr("x", 5 )
-				.text(function(d) {
-					return "$" + d3.format(",")(d);
-				})
-
-		legend.append("rect")
-				.attr("y", function(d, i){
-					return i * 22 - 13;
-				})
-				.attr("x", 65 )
-				.style("fill", function(d, i){
-					return colorScale(d);
-				})
-				.attr("height", "15px")
-				.attr("width", "20px")
-						
 };
+
+const sideBar = d3.select('.map-container')
+.append('div')
+.attr("class", "side-bar")
+
+const legend = sideBar.append("g")
+.attr("class", "legend-container")
+.attr("transform", "translate(" + (width) + "," + 20 + ")")
+.selectAll("g")
+.data([10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000])
+.enter().append("g").attr("class", "legend")
+
+//Legend position
+legend.append("text")
+.attr("y", function(d, i){
+return i * 22;
+})
+.attr("x", 5 )
+.text(function(d) {
+return "$" + d3.format(",")(d);
+})
+
+legend.append("rect")
+.attr("y", function(d, i){
+return i * 22 - 13;
+})
+.attr("x", 65 )
+.style("fill", function(d, i){
+return colorScale(d);
+})
+.attr("height", "15px")
+.attr("width", "20px")
