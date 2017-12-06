@@ -62,17 +62,19 @@ svg {
   border: 1px solid black;
 }
 
-/* .slider {
-  position: absolute;
-  top: 400px;
-  right: 100px;
+.slider {
   direction: rtl;
-  width: 150px;
-  height: 10px;
-} */
+  width: 350px;
+  height: 50px;
+
+}
+
+.slider:hover{
+  cursor: pointer;
+}
 
 .slider-container {
   position: absolute;
-  
+  z-index: 2;
   left: 950px;
 }

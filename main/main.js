@@ -41,7 +41,7 @@ var tooltip = d3.select(".map-container").append("div")
 
 d3.queue()
 	.defer(d3.json, "data/us_states_map.json")
-	.defer(d3.csv, "data/state_wage_data2.csv")
+	.defer(d3.csv, "data/data2016.csv")
 	.await(ready);
 
 // Template from https://bl.ocks.org/mbostock/4090848
@@ -51,40 +51,43 @@ const colorScale = d3.scaleThreshold()
 
 const slider = d3.select(".slider")
 					.on("input", function() {
+						console.log(this.value)
 						updateYear(Number(this.value));
 					});
 
 function updateYear(year){
 	d3.queue()
-	.defer(d3.csv, `data/state_wage_data_${year}.csv`)
-	.await(updateMap)
+	.defer(d3.json, "data/us_states_map.json")
+	.defer(d3.csv, `data/data${year}.csv`)
+	.await(ready)
 }
 
-function updateMap(error, data){
-	if (error) throw error;
-	let averageSalarybyState = {};
-	let medianSalarybyState = {};
-	let totalEmployeebyState = {};
-	data.forEach( function(d) {
-		averageSalarybyState[d.STATE] = Number(d.A_MEAN);
-		medianSalarybyState[d.STATE] = Number(d.A_MEDIAN);
-		totalEmployeebyState[d.STATE] = Number(d.TOT_EMP);
-	});
-	svg.append("g")
-	.attr("class", "states")
-	  .selectAll("path")
-	  .data(topojson.feature(us, us.objects.states).features)
-	  .enter()
-		  .append("path")
-		  .attr("d", path)
-		  .style("fill", function(d){
-			  return colorScale(averageSalarybyState[d.properties.NAME])
-		  })
-}
+// function updateMap(error, data){
+// 	if (error) throw error;
+// 	let averageSalarybyState = {};
+// 	let medianSalarybyState = {};
+// 	let totalEmployeebyState = {};
+// 	data.forEach( function(d) {
+// 		averageSalarybyState[d.STATE] = Number(d.A_MEAN);
+// 		medianSalarybyState[d.STATE] = Number(d.A_MEDIAN);
+// 		totalEmployeebyState[d.STATE] = Number(d.TOT_EMP);
+// 	});
+// 	svg.append("g")
+// 	.attr("class", "states")
+// 	  .selectAll("path")
+// 	  .data(topojson.feature(us, us.objects.states).features)
+// 	  .enter()
+// 		  .append("path")
+// 		  .attr("d", path)
+// 		  .style("fill", function(d){
+// 			  return colorScale(averageSalarybyState[d.properties.NAME])
+// 		  })
+// }
 
 				
 
 function ready(error, us, data) {
+	console.log(data)
   if (error) throw error;
 		let averageSalarybyState = {};
 		let medianSalarybyState = {};
