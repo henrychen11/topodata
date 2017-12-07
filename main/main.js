@@ -218,9 +218,16 @@ function ready(error, us, data) {
 						updateStats(d3.event.target.value, hoveredState);
 					});
 			d3.select(".stats-container").append("div").attr("class", "state-label");
+			d3.select(".stats-container").append("div").attr("class", "custom-text").text("Hovered State")
+
 			d3.select(".stats-container").append("div").attr("class", "avg-salary");
-			d3.select(".stats-container").append("div").attr("class", "med-salary");
-			d3.select(".stats-container").append("div").attr("class", "tot-emp");
+			d3.select(".stats-container").append("div").attr("class", "custom-text").text("Average Salary");
+
+			d3.select(".stats-container").append("div").attr("class", "med-salary").text("Median Salary");
+			d3.select(".stats-container").append("div").attr("class", "custom-text").text("Median Salary");
+
+			d3.select(".stats-container").append("div").attr("class", "tot-emp").text("Total Employees");
+			d3.select(".stats-container").append("div").attr("class", "custom-text").text("Total Employees");
 			updateStats("Alabama", hoveredState);
 }
 
@@ -229,19 +236,19 @@ function updateStats(state, state2="Alabama"){
 	// console.log('hovered state ', state2);
 
 	const st = d3.select(".state-label");
-	st.text("Hovered State: " + state);
+	st.text(state);
 	st.exit().remove();
 
 	const avg_sal = d3.select(".avg-salary");
-	avg_sal.text("Average Salary: $" + format(averageSalarybyState[state2] - averageSalarybyState[state]));
+	avg_sal.text("$" + format(averageSalarybyState[state2] - averageSalarybyState[state]));
 	avg_sal.exit().remove();
 
 	const med_sal = d3.select(".med-salary");
-	med_sal.text("Median Salary: $" + format(medianSalarybyState[state2] - medianSalarybyState[state]));
+	med_sal.text("$" + format(medianSalarybyState[state2] - medianSalarybyState[state]));
 	med_sal.exit().remove();
 
 	const tot_emp = d3.select(".tot-emp");
-	tot_emp.text("Total Employees: " + format(totalEmployeebyState[state2] - totalEmployeebyState[state]));
+	tot_emp.text(format(totalEmployeebyState[state2] - totalEmployeebyState[state]));
 	tot_emp.exit().remove();
 }
 
@@ -277,6 +284,8 @@ d3.select(".stats-container")
 	.append("div")
 	.attr("class", "stats-label")
 	.text("Variance From: ");
+
+
 
 //Footer
 d3.select(".navbar")

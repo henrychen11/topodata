@@ -152,6 +152,11 @@
   text-align: center;
 }
 
+.custom-text {
+  font-size: 12px;
+  color: black;
+}
+
 
 select {
   margin: 8px auto;
