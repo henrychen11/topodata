@@ -142,11 +142,12 @@
 }
 
 .stats-label {
-  font-size: 22px;
+  text-align: center;
+  font-size: 15px;
   font-weight: 600;
 }
 
-.stats-label, .state-label, .avg-salary, .med-salary, .tot-emp {
+.state-label, .avg-salary, .med-salary, .tot-emp {
   margin: 5px auto;
   text-align: center;
 }

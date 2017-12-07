@@ -220,11 +220,6 @@ function ready(error, us, data) {
 			updateStats("Alabama");
 }
 
-
-
-
-
-
 function updateStats(state){
 	const st = d3.select(".state-label");
 	st.text("Selected State: " + state);
@@ -272,7 +267,8 @@ d3.select(".side-bar")
 	.attr("class", "stats-container");
 
 d3.select(".stats-container")
-	.attr("casss", "stats-label")
+	.append("div")
+	.attr("class", "stats-label")
 	.text("Variance from California");
 
 //Footer
