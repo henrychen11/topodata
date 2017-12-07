@@ -20,6 +20,7 @@
   font-size: 35px;
   text-align: center;
   min-height: 30px;
+  margin-top: 15px;
 }
 
 .year-label {
@@ -94,7 +95,7 @@
   display: flex;
   justify-content: space-around;
   flex-direction: column;
-  width: 180px;
+  width: 120px;
   align-items: center;
 }
 
@@ -102,21 +103,18 @@
   font-size: 14px;
   display: flex;
   justify-content: center;
-  /*border: 1px solid black;*/
-  /*width: 120px;*/
   margin: 3px auto;
 }
 
 .legend-color {
   margin-left: 15px;
-  width: 30px;
-  border-radius: 5px;
-  box-shadow: 0px 0px 5px white;
+  width: 20px;
+  border-radius: 100px;
 }
 
 .stats-container {
-  border: 2px solid black;
-  width: 100%;
+  /*border: 2px solid black;*/
+  width: 180px;
   min-height: 250px;
   padding: 5px;
   display: flex;
@@ -124,6 +122,10 @@
   flex-direction: column;
 }
 
+.stats-label {
+  font-size: 22px;
+  font-weight: 600;
+}
 
 .stats-label, .state-label, .avg-salary, .med-salary, .tot-emp {
   margin: 5px auto;
@@ -154,8 +156,9 @@ select {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
+  width: 100%;
 }
 
 .year-ticks h1 {
-  margin: 0 5px;
+  margin: auto 10px;
 }

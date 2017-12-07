@@ -107,7 +107,7 @@ function ready(error, us, data) {
 					d3.select(this).style("fill", "yellow").transition().duration(300).style("cursor", "pointer").style("display", "block");
 					//Tooltip transitions
 					tooltip.transition().duration(350).style("opacity", 1);
-					tooltip.select(".state-abbr").html(d.properties.STUSPS);
+					tooltip.select(".state-abbr").html(d.properties.NAME);
 					tooltip.select(".average-salary").html("Avg. salary: " + averageSalarybyState[d.properties.NAME]);
 					tooltip.select(".median-salary").html("Median Salary: " + medianSalarybyState[d.properties.NAME]);
 					tooltip.select(".total-employee").html("Total Employee: " + totalEmployeebyState[d.properties.NAME]);
@@ -155,14 +155,16 @@ function updateStats(state){
 	st.text("Selected State: " + state);
 	st.exit().remove();
 
+	const format = d3.format(",");
+
 	const avg_sal = d3.select(".avg-salary");
-	avg_sal.text("Average Salary: " + (averageSalarybyState["California"] - averageSalarybyState[state]));
+	avg_sal.text("Average Salary: $" + format(averageSalarybyState["California"] - averageSalarybyState[state]));
 
 	const med_sal = d3.select(".med-salary");
-	med_sal.text("Median Salary: " + (medianSalarybyState["California"] - medianSalarybyState[state]));
+	med_sal.text("Median Salary: $" + format(medianSalarybyState["California"] - medianSalarybyState[state]));
 
 	const tot_emp = d3.select(".tot-emp");
-	tot_emp.text("Total Employee: " + (totalEmployeebyState["California"] - totalEmployeebyState[state]));
+	tot_emp.text("Total Employees: " + format(totalEmployeebyState["California"] - totalEmployeebyState[state]));
 }
 
 const sideBar = d3.select('.map-container')
