@@ -4,7 +4,8 @@
   flex-direction: column;
   height: 100vh;
   width: auto;
-  background: #2387ce;
+  /*background: #e8a87c;*/
+  background: linear-gradient(70deg, #c9c9c9, #e3e3e3, #9ad3de, #89bdd3);
   font-family: 'Sarala', sans-serif;
 }
 
@@ -103,9 +104,9 @@
   border-radius: 5px;
 }
 .state-abbr {
-  font-size: 14;
+  font-size: 18px;
   text-align: center;
-  font-weight: 600;
+  font-weight: 1000;
 }
 .side-bar {
   display: flex;
