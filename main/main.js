@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 import * as topojson from 'topojson';
 
 const w = 800;
-const h = 600;
+const h = 500;
 const margin = {	top: 0,	bottom: 0,	left: 10,	right: 10 };
 
 const width = w - margin.left - margin.right;
@@ -59,6 +59,7 @@ const slider = d3.select(".slider")
 					.on("input", function() {
 						d3.select(".year-label").html("Current Year: " + this.value);
 						updateYear(Number(this.value));
+						updateStats(userSelect, hoveredState);
 					});
 
 function updateYear(year){
@@ -69,15 +70,16 @@ function updateYear(year){
 }
 function ready2(error, us, data) {
   if (error) throw error;
-		data.forEach( function(d) {
-			states.push(d.STATE);
-			averageSalarybyState[d.STATE] = Number(d.A_MEAN);
-			medianSalarybyState[d.STATE] = Number(d.A_MEDIAN);
-			totalEmployeebyState[d.STATE] = Number(d.TOT_EMP);
-			hourMean[d.STATE] = Number(d.H_MEAN);
-			hourMedian[d.STATE] = Number(d.H_MEDIAN);
-			meanRSE[d.STATE] = Number(d.MEAN_PRSE);
-		});
+	data.forEach( function(d) {
+		console.log("here");
+		states.push(d.STATE);
+		averageSalarybyState[d.STATE] = Number(d.A_MEAN);
+		medianSalarybyState[d.STATE] = Number(d.A_MEDIAN);
+		totalEmployeebyState[d.STATE] = Number(d.TOT_EMP);
+		hourMean[d.STATE] = Number(d.H_MEAN);
+		hourMedian[d.STATE] = Number(d.H_MEDIAN);
+		meanRSE[d.STATE] = Number(d.MEAN_PRSE);
+	});
 
 	  svg.append("g")
 	      .attr("class", "states")
@@ -93,7 +95,7 @@ function ready2(error, us, data) {
 					d3.select(this).style("fill", "yellow").transition().duration(300).style("cursor", "pointer").style("display", "block");
 					//Stats container update
 					hoveredState = d.properties.NAME;
-					updateStats(hoveredState);
+					updateStats(userSelect, hoveredState);
 					//Tooltip transitions
 					tooltip.transition().duration(350).style("opacity", 1);
 					tooltip.select(".state-abbr").html(d.properties.NAME);
@@ -131,6 +133,7 @@ function ready2(error, us, data) {
 													.text(function(d) {return d;});
 
 				select.on("change", function() {
+					userSelect = d3.event.target.value;
 					updateStats(d3.event.target.value, hoveredState);
 				});
 }
@@ -147,6 +150,7 @@ let totalEmployeebyState = {};
 let hourMean = {};
 let hourMedian = {};
 let meanRSE = {};
+let userSelect;
 
 function ready(error, us, data) {
   if (error) throw error;
@@ -174,7 +178,7 @@ function ready(error, us, data) {
 					d3.select(this).style("fill", "yellow").transition().duration(300).style("cursor", "pointer").style("display", "block");
 					//Updating Stats Box
 					hoveredState = d.properties.NAME;
-					updateStats(hoveredState);
+					updateStats(userSelect, hoveredState);
 					//Tooltip transitions
 					tooltip.transition().duration(350).style("opacity", 1);
 					tooltip.select(".state-abbr").html(d.properties.NAME);
@@ -228,13 +232,13 @@ function ready(error, us, data) {
 
 			d3.select(".stats-container").append("div").attr("class", "tot-emp").text("Total Employees");
 			d3.select(".stats-container").append("div").attr("class", "custom-text").text("Total Employees");
-			updateStats("Alabama", hoveredState);
+			updateStats(userSelect, hoveredState);
 }
 
-function updateStats(state, state2="Alabama"){
+function updateStats(state="Alabama", state2="Alabama"){
 	// console.log('selected state ', state);
 	// console.log('hovered state ', state2);
-
+	console.log("here at update");
 	const st = d3.select(".state-label");
 	st.text(state);
 	st.exit().remove();
