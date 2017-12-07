@@ -6,7 +6,7 @@
   width: auto;
   /*background: #e8a87c;*/
   background: linear-gradient(70deg, #c9c9c9, #e3e3e3, #9ad3de, #89bdd3);
-  font-family: 'Sarala', sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .map-container {
@@ -22,6 +22,7 @@
   justify-content: center;
   min-height: 30px;
   margin-top: 15px;
+  font-weight: 700;
 }
 
 .footer {
@@ -119,14 +120,15 @@
 .legend {
   font-size: 14px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   margin: 3px auto;
+  width: 85px;
 }
 
 .legend-color {
-  margin-left: 15px;
+  /*justify-content: flex-end;*/
   width: 20px;
-  border-radius: 100px;
+  /*border-radius: 100px;*/
 }
 
 .stats-container {
