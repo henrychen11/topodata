@@ -20,9 +20,6 @@ const svg = d3.select(".map-container")
 				.append("svg")
 				.attr("height", height)
 				.attr("width", width);
-				// .call(d3.zoom().on("zoom", function () {
-				//   svg.attr("transform", d3.event.transform);
-				// 	}));
 
 // //This is the tooltip element
 var tooltip = d3.select(".map-container").append("div")
@@ -94,6 +91,9 @@ function ready2(error, us, data) {
 				})
 				.on("mouseover", function(d, i){
 					d3.select(this).style("fill", "yellow").transition().duration(300).style("cursor", "pointer").style("display", "block");
+					//Stats container update
+					hoveredState = d.properties.NAME;
+					updateStats(hoveredState);
 					//Tooltip transitions
 					tooltip.transition().duration(350).style("opacity", 1);
 					tooltip.select(".state-abbr").html(d.properties.NAME);
@@ -131,7 +131,7 @@ function ready2(error, us, data) {
 													.text(function(d) {return d;});
 
 				select.on("change", function() {
-					updateStats(d3.event.target.value);
+					updateStats(d3.event.target.value, hoveredState);
 				});
 }
 
@@ -140,6 +140,7 @@ const select = d3.select(".stats-container")
 									.attr("type", "select");
 
 let states = [];
+let hoveredState;
 let averageSalarybyState = {};
 let medianSalarybyState = {};
 let totalEmployeebyState = {};
@@ -171,6 +172,9 @@ function ready(error, us, data) {
 				})
 				.on("mouseover", function(d, i){
 					d3.select(this).style("fill", "yellow").transition().duration(300).style("cursor", "pointer").style("display", "block");
+					//Updating Stats Box
+					hoveredState = d.properties.NAME;
+					updateStats(hoveredState);
 					//Tooltip transitions
 					tooltip.transition().duration(350).style("opacity", 1);
 					tooltip.select(".state-abbr").html(d.properties.NAME);
@@ -211,30 +215,33 @@ function ready(error, us, data) {
 														.text(function(d) {return d;});
 
 					select.on("change", function() {
-						updateStats(d3.event.target.value);
+						updateStats(d3.event.target.value, hoveredState);
 					});
 			d3.select(".stats-container").append("div").attr("class", "state-label");
 			d3.select(".stats-container").append("div").attr("class", "avg-salary");
 			d3.select(".stats-container").append("div").attr("class", "med-salary");
 			d3.select(".stats-container").append("div").attr("class", "tot-emp");
-			updateStats("Alabama");
+			updateStats("Alabama", hoveredState);
 }
 
-function updateStats(state){
+function updateStats(state, state2="Alabama"){
+	// console.log('selected state ', state);
+	// console.log('hovered state ', state2);
+
 	const st = d3.select(".state-label");
-	st.text("Selected State: " + state);
+	st.text("Hovered State: " + state);
 	st.exit().remove();
 
 	const avg_sal = d3.select(".avg-salary");
-	avg_sal.text("Average Salary: $" + format(averageSalarybyState["California"] - averageSalarybyState[state]));
+	avg_sal.text("Average Salary: $" + format(averageSalarybyState[state2] - averageSalarybyState[state]));
 	avg_sal.exit().remove();
 
 	const med_sal = d3.select(".med-salary");
-	med_sal.text("Median Salary: $" + format(medianSalarybyState["California"] - medianSalarybyState[state]));
+	med_sal.text("Median Salary: $" + format(medianSalarybyState[state2] - medianSalarybyState[state]));
 	med_sal.exit().remove();
 
 	const tot_emp = d3.select(".tot-emp");
-	tot_emp.text("Total Employees: " + format(totalEmployeebyState["California"] - totalEmployeebyState[state]));
+	tot_emp.text("Total Employees: " + format(totalEmployeebyState[state2] - totalEmployeebyState[state]));
 	tot_emp.exit().remove();
 }
 
@@ -269,7 +276,7 @@ d3.select(".side-bar")
 d3.select(".stats-container")
 	.append("div")
 	.attr("class", "stats-label")
-	.text("Variance from California");
+	.text("Variance From: ");
 
 //Footer
 d3.select(".navbar")
