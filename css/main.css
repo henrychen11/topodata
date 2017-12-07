@@ -10,17 +10,27 @@
 
 .map-container {
   display: flex;
-  flex-direction: row;
   justify-content: center;
-  height: 100%;
+  padding-left: 30px;
+  max-height: 100%;
 }
 
 .page-header {
-  width: 100%;
+  display: flex;
   font-size: 35px;
-  text-align: center;
+  justify-content: center;
   min-height: 30px;
   margin-top: 15px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  min-height: 30px;
+  font-size: 45px;
+}
+
+.footer-logo {
 }
 
 .year-label {
@@ -33,6 +43,7 @@
   min-height: 100px;
   justify-content: center;
   align-items: center;
+  font-size: 22px;
 }
 
 /* Template from CSS W3 */
@@ -84,13 +95,17 @@
 .tooltip {
   position: absolute;
   z-index: 2;
-  box-shadow: 2px 2px 5px gray;
+  box-shadow: 1px 1px 5px gray;
   padding: 10px;
-  width: fit-content;
-  font-size: 15px;
-  background-color: gray;
+  font-size: 12px;
+  background-color: lightgray;
+  border-radius: 5px;
 }
-
+.state-abbr {
+  font-size: 14;
+  text-align: center;
+  font-weight: 600;
+}
 .side-bar {
   display: flex;
   justify-content: space-around;
@@ -113,10 +128,10 @@
 }
 
 .stats-container {
-  /*border: 2px solid black;*/
   width: 180px;
   min-height: 250px;
   padding: 5px;
+  margin-bottom: 15px;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -139,17 +154,6 @@ select {
 
 .dropdown {
   min-height: 30px;
-}
-
-.footer {
-  display: flex;
-  justify-content: space-around;
-  min-height: 30px;
-  width: 100%;
-}
-
-.footer-logo {
-  font-size: 40px;
 }
 
 .year-ticks {
