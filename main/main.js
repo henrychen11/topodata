@@ -1,9 +1,9 @@
 import * as d3 from 'd3';
 import * as topojson from 'topojson';
 
-const w = 1000;
+const w = 800;
 const h = 600;
-const margin = {	top: 10,	bottom: 10,	left: 10,	right: 10 };
+const margin = {	top: 0,	bottom: 0,	left: 10,	right: 10 };
 
 const width = w - margin.left - margin.right;
 const height = h - margin.top - margin.bottom;
@@ -18,7 +18,7 @@ const path = d3.geoPath()
 // //This is the main map element
 const svg = d3.select(".map-container")
 				.append("svg")
-				.attr("height", "100%")
+				.attr("height", height)
 				.attr("width", width);
 				// .call(d3.zoom().on("zoom", function () {
 				//   svg.attr("transform", d3.event.transform);
@@ -44,6 +44,7 @@ var tooltip = d3.select(".map-container").append("div")
 			.attr("class", "median-hour");
 	tooltip.append("div")
 			.attr("class", "error");
+
 const format = d3.format(",");
 
 d3.queue()
@@ -204,7 +205,7 @@ const select = d3.select(".stats-container")
 									.attr("type", "select");
 
 //Footer
-d3.select(".map-container")
+d3.select(".navbar")
 	.append("div")
 	.attr("class", "footer");
 
