@@ -4,8 +4,7 @@
   flex-direction: column;
   height: 100vh;
   width: auto;
-  /*background: #e8a87c;*/
-  background: linear-gradient(70deg, #c9c9c9, #e3e3e3, #9ad3de, #89bdd3);
+  background: linear-gradient(0deg, #c9c9c9, #e3e3e3, #9ad3de, #89bdd3);
   font-family: 'Montserrat', sans-serif;
 }
 
