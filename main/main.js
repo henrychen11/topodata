@@ -241,25 +241,25 @@ function updateStats(selectedState, userHoveredState){
 	st.exit().remove();
 
 	const avg_sal = d3.select(".avg-salary");
-	avg_sal.text("$" + format(averageSalarybyState[selectedState] - averageSalarybyState[userHoveredState])).style("color", function(){
-		if ((medianSalarybyState[selectedState] - medianSalarybyState[userHoveredState]) > 0){
+	avg_sal.text("$" + format(averageSalarybyState[userHoveredState] - averageSalarybyState[selectedState])).style("color", function(){
+		if ((medianSalarybyState[userHoveredState] - medianSalarybyState[selectedState]) > 0){
 			return "green";
-		} else if ((medianSalarybyState[selectedState] - medianSalarybyState[userHoveredState]) < 0) {
+		} else if ((medianSalarybyState[userHoveredState] - medianSalarybyState[selectedState]) < 0) {
 			return "red";
 		}});
 	avg_sal.exit().remove();
 
 	const med_sal = d3.select(".med-salary");
-	med_sal.text("$" + format(medianSalarybyState[selectedState] - medianSalarybyState[userHoveredState])).style("color", function(){
-		if ((medianSalarybyState[selectedState] - medianSalarybyState[userHoveredState]) > 0){
+	med_sal.text("$" + format(medianSalarybyState[userHoveredState] - medianSalarybyState[selectedState])).style("color", function(){
+		if ((medianSalarybyState[userHoveredState] - medianSalarybyState[selectedState]) > 0){
 			return "green";
-		} else if ((medianSalarybyState[selectedState] - medianSalarybyState[userHoveredState]) < 0) {
+		} else if ((medianSalarybyState[userHoveredState] - medianSalarybyState[selectedState]) < 0) {
 			return "red";
 		}});
 	med_sal.exit().remove();
 
 	const tot_emp = d3.select(".tot-emp");
-	tot_emp.text(format(totalEmployeebyState[selectedState] - totalEmployeebyState[userHoveredState]));
+	tot_emp.text(format(totalEmployeebyState[userHoveredState] - totalEmployeebyState[selectedState]));
 	tot_emp.exit().remove();
 }
 
